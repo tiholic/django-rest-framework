@@ -255,6 +255,8 @@ class PageNumberPagination(BasePagination):
             },
             'required': [
                 'count',
+                'next',
+                'previous',
                 'results',
             ],
         }
@@ -432,6 +434,8 @@ class LimitOffsetPagination(BasePagination):
             },
             'required': [
                 'count',
+                'next',
+                'previous',
                 'results',
             ],
         }
@@ -921,6 +925,8 @@ class CursorPagination(BasePagination):
                 'results': schema,
             },
             'required': [
+                'next',
+                'previous',
                 'results',
             ],
         }
