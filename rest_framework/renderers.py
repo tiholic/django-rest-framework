@@ -105,7 +105,7 @@ class JSONRenderer(BaseRenderer):
 
         # We always fully escape \u2028 and \u2029 to ensure we output JSON
         # that is a strict javascript subset.
-        # See: http://timelessrepo.com/json-isnt-a-javascript-subset
+        # See: https://gist.github.com/damncabbage/623b879af56f850a6ddc
         ret = ret.replace('\u2028', '\\u2028').replace('\u2029', '\\u2029')
         return ret.encode()
 
@@ -1035,13 +1035,16 @@ class CoreAPIJSONOpenAPIRenderer(_BaseOpenAPIRenderer):
     media_type = 'application/vnd.oai.openapi+json'
     charset = None
     format = 'openapi-json'
+    ensure_ascii = not api_settings.UNICODE_JSON
 
     def __init__(self):
         assert coreapi, 'Using CoreAPIJSONOpenAPIRenderer, but `coreapi` is not installed.'
 
     def render(self, data, media_type=None, renderer_context=None):
         structure = self.get_structure(data)
-        return json.dumps(structure, indent=4).encode('utf-8')
+        return json.dumps(
+            structure, indent=4,
+            ensure_ascii=self.ensure_ascii).encode('utf-8')
 
 
 class OpenAPIRenderer(BaseRenderer):
@@ -1065,6 +1068,9 @@ class JSONOpenAPIRenderer(BaseRenderer):
     charset = None
     encoder_class = encoders.JSONEncoder
     format = 'openapi-json'
+    ensure_ascii = not api_settings.UNICODE_JSON
 
     def render(self, data, media_type=None, renderer_context=None):
-        return json.dumps(data, cls=self.encoder_class, indent=2).encode('utf-8')
+        return json.dumps(
+            data, cls=self.encoder_class, indent=2,
+            ensure_ascii=self.ensure_ascii).encode('utf-8')

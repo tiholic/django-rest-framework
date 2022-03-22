@@ -116,7 +116,7 @@ Calling `.save()` will either create a new instance, or update an existing insta
     # .save() will update the existing `comment` instance.
     serializer = CommentSerializer(comment, data=data)
 
-Both the `.create()` and `.update()` methods are optional. You can implement either neither, one, or both of them, depending on the use-case for your serializer class.
+Both the `.create()` and `.update()` methods are optional. You can implement either none, one, or both of them, depending on the use-case for your serializer class.
 
 #### Passing additional attributes to `.save()`
 
@@ -524,6 +524,7 @@ You can add extra fields to a `ModelSerializer` or override the default fields b
 
         class Meta:
             model = Account
+            fields = ['url', 'groups']
 
 Extra fields can correspond to any property or callable on the model.
 
@@ -1095,7 +1096,7 @@ For example, if you wanted to be able to set which fields should be used by a se
             fields = kwargs.pop('fields', None)
 
             # Instantiate the superclass normally
-            super(DynamicFieldsModelSerializer, self).__init__(*args, **kwargs)
+            super().__init__(*args, **kwargs)
 
             if fields is not None:
                 # Drop any fields that are not specified in the `fields` argument.
